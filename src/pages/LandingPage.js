@@ -11,26 +11,36 @@ import { SignInButton, SignUpButton } from '@clerk/clerk-react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { useEffect } from 'react';
-import { useSpring, animated } from '@react-spring/web';
-//import 'https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap';
-
-
+import { useTypewriter } from 'react-simple-typewriter';
 // Import other images for the slider
 import featureImage2 from './background/image2.png';
 import featureImage3 from './background/image3.png';
 
-function LandingPage() {
-  const [lineIndex, setLineIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [currentLines, setCurrentLines] = useState([]);
-  const [isButtonVisible, setButtonVisible] = useState(false);
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const lines = [
-    'Unlock Your Dream Job with',
-    'AI-Powered Interview Prep',
-    'Tailored Questions for Success',
-  ];
+
+
+function LandingPage() {
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const [text1] = useTypewriter({
+    words: ['Unlock Your Dream Job With'],
+    loop: 1, // Set loop to 1 to type each word once and then stop
+    typeSpeed: 70,
+    delaySpeed: 5000,
+  });
+  const [text2] = useTypewriter({
+    words: ['AI-Powered Interview Prep'],
+    loop: 1, // Set loop to 1 to type the sentence once and then stop
+    typeSpeed: 70,
+    delaySpeed: 1500,
+  });
+  const [text3] = useTypewriter({
+    words: ['Tailored Questions for Success'],
+    loop: 1, // Set loop to 1 to type the sentence once and then stop
+    typeSpeed: 70,
+    delaySpeed: 1500,
+  });
+
 
   // Slider settings
   const sliderSettings = {
@@ -46,45 +56,10 @@ function LandingPage() {
   const history = useHistory();
 
   useEffect(() => {
-    if (lineIndex < lines.length) {
-      if (charIndex < lines[lineIndex].length) {
-        const timeout = setTimeout(() => {
-          setCurrentLines((prev) => {
-            const updatedLines = [...prev];
-            if (updatedLines[lineIndex]) {
-              updatedLines[lineIndex] += lines[lineIndex][charIndex];
-            } else {
-              updatedLines[lineIndex] = lines[lineIndex][charIndex];
-            }
-            return updatedLines;
-          });
-          setCharIndex((prevIndex) => prevIndex + 1);
-        }, 50); // Adjust to control the speed of typing each character
-        return () => clearTimeout(timeout);
-      } else {
-        const lineTimeout = setTimeout(() => {
-          setLineIndex((prevIndex) => prevIndex + 1);
-          setCharIndex(0);
-        }, 100); // Delay before moving to the next line
-        return () => clearTimeout(lineTimeout);
-      }
-    } else {
-      setButtonVisible(true);
-    }
-  }, [charIndex, lineIndex]);
-
-  useEffect(() => {
     if (isSignedIn) {
       history.push('/dashboard');
     }
   }, [isSignedIn, history]);
-
-  const typingAnimation = useSpring({
-    from: { opacity: 0, transform: 'translateY(20px)' },
-    to: { opacity: 1, transform: 'translateY(0)' },
-    config: { duration: 1000 },
-  });
-
 
   // FAQ data
   const faqs = [
@@ -157,55 +132,39 @@ function LandingPage() {
         )}
       </nav>
 
-      {/* Home Section */}
       <div>
       {/* Home Section */}
       <section
         id="home"
-        className={`h-screen flex flex-col justify-center items-center bg-cover bg-center px-4 ${isMobile ? 'px-2' : 'px-6'}`}
+        className="h-screen flex justify-center items-center bg-cover bg-center px-4"
         style={{ backgroundImage: `url(${homebg})` }}
       >
-        {/* Container/Card for Text and Button */}
-        <div className="text-container bg-white bg-opacity-20 p-8 rounded-lg shadow-lg text-center ">
-          {currentLines.map((line, index) => (
-            <div key={index} className="text-line flex justify-center mb-4">
-              {line.split('').map((char, charIndex) => (
-                <span
-                  key={charIndex}
-                  className={`text-${index === 0 ? '6xl' : index === 1 ? '5xl' : '3xl'} sm:text-${index === 0 ? '6xl' : index === 1 ? '5xl' : '3xl'} ${index === 2 ? 'font-normal' : 'font-bold'} text-white transition-colors duration-300 ${char === ' ' ? 'mr-0.5' : ''}`}                  style={{
-                    fontFamily: index < 2 ? 'Lora, serif' : 'Lato',
-                    WebkitTextFillColor: 'white',
-                    transition: 'color 0.3s ease',
-                  }}
-                  onMouseOver={(e) => {
-                    if (char !== ' ') {
-                      e.target.style.backgroundImage = 'linear-gradient(to right, #6a11cb, #4a90e2, #ff0080)';
-                      e.target.style.transform = 'translateY(-5px)';
-                      e.target.style.WebkitBackgroundClip = 'text';
-                      e.target.style.WebkitTextFillColor = 'transparent';
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.WebkitTextFillColor = 'white';
-                    e.target.style.transform = 'translateY(0)';
-                  }}
-                >
-                  {char === ' ' ? ' ' : char}
-                </span>
-              ))}
+        {/* Container to wrap content */}
+        <div className="container mx-auto flex justify-center items-center">
+          {/* Card */}
+          <div className="bg-gradient-to-r from-[#363d4f] to-[#7a8db5] text-white p-4 sm:px-10 sm:py-16 rounded-3xl shadow-lg w-full max-w-md h-[80vh] sm:max-w-none sm:w-5/6 lg:w-2/3 sm:h-auto flex items-center sm:justify-end sm:items-start mx-2">
+            <div className="text-right">
+              {/* Typewriter effect for the text */}
+              <h1 className="text-6xl sm:text-6xl font-bold mb-2">
+                {text1}
+              </h1>
+              <h2 className="text-5xl sm:text-5xl font-bold mb-2">
+                {text2}
+              </h2>
+              <p className="text-lg sm:text-xl mb-6 pb-5">
+                {text3}
+              </p>
+              <SignInButton mode="modal">
+                <button className="px-6 py-3 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:bg-gray-200">
+                  Get Started For Free!
+                </button>
+              </SignInButton>
             </div>
-          ))}
-
-          {isButtonVisible && (
-            <SignInButton mode="modal">
-              <button className="button-container px-6 py-3 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:bg-gray-200 mt-6">
-                Get Started For Free!
-              </button>
-            </SignInButton>
-          )}
+          </div>
         </div>
       </section>
     </div>
+
 
       {/* About Section */}
       <section id="about" className="h-screen flex flex-col justify-center items-center bg-[#011a2e] py-20">
@@ -221,6 +180,26 @@ function LandingPage() {
               interview practice experience.
             </p>
           </div>
+          {/*<div className="flex flex-col space-y-4 flex-1">
+            <div></div>
+            <div className="bg-white text-blue p-5 rounded-3xl shadow-lg">
+              <center>
+                <h3 className="sm:text-xl font-bold">Resume Based Interview Questions</h3>
+              </center>
+            </div>
+            <div></div>
+            <div className="bg-white text-blue p-5 rounded-3xl shadow-lg">
+              <center>
+                <h3 className="sm:text-xl font-bold">Role Based Interview Questions</h3>
+              </center>
+            </div>
+            <div></div>
+            <div className="bg-white text-blue p-5 rounded-3xl shadow-lg">
+              <center>
+                <h3 className="sm:text-xl font-bold">Company Specific Interview Questions</h3>
+              </center>
+            </div>
+          </div> */}
         </div>
       </section>
 
