@@ -109,5 +109,23 @@ code {
 }
 
 
+.card-glow {
+  transition: box-shadow 0.3s ease-in-out;
+  
+}
+.card-glow:hover {
+  box-shadow: 0 0 20px 5px rgba(110, 231, 255, 0.5), 
+              0 0 30px 10px rgba(120, 115, 245, 0.5);
+  transform: translateY(-5px);
+}
 
 
+/* Base style for larger screens */
+.responsive-image {
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* For images covering the whole card on mobile */

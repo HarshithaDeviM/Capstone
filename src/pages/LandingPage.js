@@ -15,6 +15,9 @@ import { useTypewriter } from 'react-simple-typewriter';
 // Import other images for the slider
 import featureImage2 from './background/image2.png';
 import featureImage3 from './background/image3.png';
+import mobileImage1 from './background/mobileFeature1.jpg';
+import mobileImage2 from './background/mobileFeature2.jpg';
+import mobileImage3 from './background/mobileFeature3.jpg';
 
 
 
@@ -25,6 +28,8 @@ function LandingPage() {
   const [text2, setText2] = useState('');
   const [text3, setText3] = useState('');
   const [showButton, setShowButton] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
 
   useEffect(() => {
     // Function to handle the typewriter animation with async/await
@@ -39,6 +44,30 @@ function LandingPage() {
     };
 
     startTyping(); // Trigger the typing animation
+  }, []);
+  const renderHeaderWithGradientEffect = (text) => {
+    return text.split("").map((letter, index) => (
+      <span key={index} className="gradient-letter">
+        {letter}
+      </span>
+    ));
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Initial check
+    handleResize();
+
+    // Add event listener to handle resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Utility function to create a delay
@@ -84,13 +113,7 @@ function LandingPage() {
   };
   const { isSignedIn } = useAuth();
   const history = useHistory();
-  const renderTextWithGradient = (text) => {
-    return text.split("").map((letter, index) => (
-      <span key={index} className="letter">
-        {letter}
-      </span>
-    ));
-  };
+
 
   useEffect(() => {
     if (isSignedIn) {
@@ -180,24 +203,24 @@ function LandingPage() {
           <div className="container mx-auto flex justify-center items-center">
             {/* Card */}
             <div className=" text-white p-10 rounded-3xl shadow-lg w-full max-w-3xl lg:max-w-5xl flex flex-col justify-center items-center text-center mx-4 container-glow">              <div className="flex flex-col items-center justify-center h-full w-full">
-                {/* Typewriter effect for the text */}
-                <h1 className="text-4xl sm:text-6xl font-bold mb-4 gradient-text">
-                  {wrapEachWord(text1)}
-                </h1>
-                <h2 className="text-3xl sm:text-5xl font-bold mb-4 gradient-text">
-                  {wrapEachWord(text2)}
-                </h2>
-                <p className="text-lg sm:text-2xl mb-6 gradient-text">
-                  {wrapEachWord(text3)}
-                </p>
-                {showButton && (
-                  <SignInButton mode="modal">
-                    <button className="px-6 py-3 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:bg-gray-200 button-gradient">
-                      Get Started For Free!
-                    </button>
-                  </SignInButton>
-                )}
-              </div>
+              {/* Typewriter effect for the text */}
+              <h1 className="text-4xl sm:text-6xl font-bold mb-4 gradient-text">
+                {wrapEachWord(text1)}
+              </h1>
+              <h2 className="text-3xl sm:text-5xl font-bold mb-4 gradient-text">
+                {wrapEachWord(text2)}
+              </h2>
+              <p className="text-lg sm:text-2xl mb-6 gradient-text">
+                {wrapEachWord(text3)}
+              </p>
+              {showButton && (
+                <SignInButton mode="modal">
+                  <button className="px-6 py-3 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:bg-gray-200 button-gradient">
+                    Get Started For Free!
+                  </button>
+                </SignInButton>
+              )}
+            </div>
             </div>
           </div>
         </section>
@@ -246,82 +269,85 @@ function LandingPage() {
       {/* Features Section */}
       <section id="features" className="min-h-screen flex justify-center items-center bg-[#011a2e] py-20">
         <div className="container mx-auto px-4 sm:px-2 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <Slider {...sliderSettings} className="feature-slider">
+          <div className="max-w-6xl mx-auto rounded-3xl ">
+            <Slider {...sliderSettings} className="feature-slider  card-glow rounded-3xl">
               {/* Slide 1 */}
-              <div className="p-4 md:px-2 w-full">
-                <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe]">
-                  <div className="flex-1 flex items-center justify-center overflow-hidden rounded-3xl">
-                    <img
-                      src={eImage}
-                      alt="Feature 1"
-                      className="w-full h-auto object-contain p-4"
-                    />
+              <div className="p-4 md:px-2 w-full ">
+                <SignInButton mode="modal">
+                  <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe] cursor-pointer ">
+                    <div className="flex-1 flex items-center justify-center overflow-hidden rounded-3xl  ">
+                      <img
+                        src={isMobile ? mobileImage1 : eImage}
+                        alt="Feature 1"
+                        className={isMobile ? "w-full h-full object-cover" : "responsive-image"}
+                      />
+                    </div>
+                    <h3
+                      className="absolute top-4 w-full text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue"
+                    >
+                      Resume Based Questions
+                    </h3>
                   </div>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue m-4 md:m-8 absolute top-0 left-0">
-                    Resume Based Questions
-                  </h3>
-                  <SignInButton mode="modal">
-                    <button className="bg-blue-600 text-white px-4 py-2 md:px-6 md:py-2 rounded-full absolute bottom-4 right-[calc(4rem+37.8px)] md:bottom-8 hover:bg-blue-700 transform hover:scale-105 transition-transform duration-300 ">
-                      Try it now!
-                    </button>
-
-                  </SignInButton>
-                </div>
+                </SignInButton>
               </div>
+
               {/* Slide 2 */}
               <div className="p-4 md:px-2 w-full">
-                <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe]">
-                  <div className="flex-1 flex items-center justify-center overflow-hidden rounded-3xl">
-                    <img
-                      src={featureImage2}
-                      alt="Feature 2"
-                      className="w-full h-auto object-contain p-4"
-                    />
+                <SignInButton mode="modal">
+                  <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe] cursor-pointer card-hover-lift">
+                    <div className="flex-1 flex items-center justify-center overflow-hidden rounded-3xl">
+                      <img
+                        src={isMobile ? mobileImage2 : featureImage2}
+                        alt="Feature 2"
+                        className={isMobile ? "w-full h-full object-cover" : "responsive-image"}
+                      />
+                    </div>
+                    <h3
+                      className="absolute top-4 w-full text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue"
+                    >
+                      Role Based Questions
+                    </h3>
                   </div>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue m-4 md:m-8 absolute top-0 left-0">
-                    Role Based Questions
-                  </h3>
-                  <SignInButton mode="modal">
-                    <button className="bg-blue-600 text-white px-4 py-2 md:px-6 md:py-2 rounded-full absolute bottom-4 right-[calc(4rem+37.8px)] md:bottom-8 hover:bg-blue-700 transform hover:scale-105 transition-transform duration-300">
-                      Try it now!
-                    </button>
-
-                  </SignInButton>
-                </div>
+                </SignInButton>
               </div>
+
               {/* Slide 3 */}
               <div className="p-4 md:px-2 w-full">
-                <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe]">
-                  <div className="flex-1 flex items-center justify-center overflow-hidden rounded-3xl">
-                    <img
-                      src={featureImage3}
-                      alt="Feature 3"
-                      className="w-full h-auto object-contain p-4"
-                    />
+                <SignInButton mode="modal">
+                  <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe] cursor-pointer card-hover-lift">
+                    <div className="flex-1 flex items-center justify-center overflow-hidden rounded-3xl">
+                      <img
+                        src={isMobile ? mobileImage3 : featureImage3}
+                        alt="Feature 3"
+                        className={isMobile ? "w-full h-full object-cover" : "responsive-image"}
+                      />
+                    </div>
+                    <h3
+                      className="absolute top-4 w-full text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue"
+                    >
+                      Company Specific Questions
+                    </h3>
                   </div>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue m-4 md:m-8 absolute top-0 left-0">
-                    Company Specific Questions
-                  </h3>
-                  <SignInButton mode="modal">
-                    <button className="bg-blue-600 text-white px-4 py-2 md:px-6 md:py-2 rounded-full absolute bottom-4 right-[calc(4rem+37.8px)] md:bottom-8 hover:bg-blue-700 transform hover:scale-105 transition-transform duration-300">
-                      Try it now!
-                    </button>
-
-                  </SignInButton>
-                </div>
+                </SignInButton>
               </div>
+
+
+
+
+
+
+
             </Slider>
           </div>
         </div>
-      </section>
+      </section >
 
 
 
       {/* Plans Section */}
-      <section id="plans" className="min-h-screen flex flex-col justify-center items-center bg-[#011a2e] py-16">
+      < section id="plans" className="min-h-screen flex flex-col justify-center items-center bg-[#011a2e] py-16" >
         {/* Heading for Plans */}
-        <h2 className="text-5xl text-white text-center font-semibold mb-10">Our Plans</h2>
+        < h2 className="text-5xl text-white text-center font-semibold mb-10" > Our Plans</h2 >
 
         <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-6 w-full px-4">
           {/* Basic Plan */}
@@ -377,13 +403,13 @@ function LandingPage() {
             </center>
           </div>
         </div>
-      </section>
+      </section >
 
 
 
 
       {/* FAQ Section */}
-      <section id="faqs" className="min-h-screen flex flex-col justify-center items-center bg-[#011a2e] py-20">
+      < section id="faqs" className="min-h-screen flex flex-col justify-center items-center bg-[#011a2e] py-20" >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-5xl font-bold text-white mb-10 text-center">Frequently Asked Questions</h1>
           <div className="max-w-3xl mx-auto">
@@ -411,8 +437,8 @@ function LandingPage() {
             <br></br>Prepare smarter, not harder.
           </p>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   );
 }
 
