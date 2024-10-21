@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './index.css';
-import homebg from './background/homebg.jpg';
+import homebg from './background/homebg.png';
 //import test from './background/test.jpg';
 import eImage from './background/e1.png';
 import Slider from 'react-slick';
@@ -21,26 +21,56 @@ import featureImage3 from './background/image3.png';
 
 function LandingPage() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
-  const [text1] = useTypewriter({
-    words: ['Unlock Your Dream Job With'],
-    loop: 1, // Set loop to 1 to type each word once and then stop
-    typeSpeed: 70,
-    delaySpeed: 5000,
-  });
-  const [text2] = useTypewriter({
-    words: ['AI-Powered Interview Prep'],
-    loop: 1, // Set loop to 1 to type the sentence once and then stop
-    typeSpeed: 70,
-    delaySpeed: 1500,
-  });
-  const [text3] = useTypewriter({
-    words: ['Tailored Questions for Success'],
-    loop: 1, // Set loop to 1 to type the sentence once and then stop
-    typeSpeed: 70,
-    delaySpeed: 1500,
-  });
+  const [text1, setText1] = useState('');
+  const [text2, setText2] = useState('');
+  const [text3, setText3] = useState('');
+  const [showButton, setShowButton] = useState(false);
 
+  useEffect(() => {
+    // Function to handle the typewriter animation with async/await
+    const startTyping = async () => {
+      await typeSentence('Unlock Your Dream Job With', setText1, 60);
+      await wait(100); // Wait half a second before starting the next sentence
+      await typeSentence('AI-Powered Interview Prep', setText2, 60);
+      await wait(100); // Wait again before starting the next sentence
+      await typeSentence('Tailored Questions for Success', setText3, 60);
+      await wait(500);
+      setShowButton(true);
+    };
+
+    startTyping(); // Trigger the typing animation
+  }, []);
+
+  // Utility function to create a delay
+  const wait = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
+  // Function to type out each sentence letter by letter
+  const typeSentence = async (sentence, setText, speed) => {
+    for (let i = 0; i <= sentence.length; i++) {
+      await wait(speed);
+      setText(sentence.slice(0, i));
+    }
+  };
+
+  const wrapEachWord = (text) => {
+    return text.split(" ").map((word, wordIndex) => (
+      <span key={wordIndex} className="word" style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+        {word.split("").map((char, charIndex) => (
+          <span
+            key={charIndex}
+            className="letter"
+            style={{ display: "inline-block" }} // Keeps each character inline
+          >
+            {char}
+          </span>
+        ))}
+        {/* Add a space after each word */}
+        <span className="letter" style={{ display: "inline-block" }}>&nbsp;</span>
+      </span>
+    ));
+  };
 
   // Slider settings
   const sliderSettings = {
@@ -54,6 +84,13 @@ function LandingPage() {
   };
   const { isSignedIn } = useAuth();
   const history = useHistory();
+  const renderTextWithGradient = (text) => {
+    return text.split("").map((letter, index) => (
+      <span key={index} className="letter">
+        {letter}
+      </span>
+    ));
+  };
 
   useEffect(() => {
     if (isSignedIn) {
@@ -133,37 +170,38 @@ function LandingPage() {
       </nav>
 
       <div>
-      {/* Home Section */}
-      <section
-        id="home"
-        className="h-screen flex justify-center items-center bg-cover bg-center px-4"
-        style={{ backgroundImage: `url(${homebg})` }}
-      >
-        {/* Container to wrap content */}
-        <div className="container mx-auto flex justify-center items-center">
-          {/* Card */}
-          <div className="bg-gradient-to-r from-[#363d4f] to-[#7a8db5] text-white p-4 sm:px-10 sm:py-16 rounded-3xl shadow-lg w-full max-w-md h-[80vh] sm:max-w-none sm:w-5/6 lg:w-2/3 sm:h-auto flex items-center sm:justify-end sm:items-start mx-2">
-            <div className="text-right">
-              {/* Typewriter effect for the text */}
-              <h1 className="text-6xl sm:text-6xl font-bold mb-2">
-                {text1}
-              </h1>
-              <h2 className="text-5xl sm:text-5xl font-bold mb-2">
-                {text2}
-              </h2>
-              <p className="text-lg sm:text-xl mb-6 pb-5">
-                {text3}
-              </p>
-              <SignInButton mode="modal">
-                <button className="px-6 py-3 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:bg-gray-200">
-                  Get Started For Free!
-                </button>
-              </SignInButton>
+        {/* Home Section */}
+        <section
+          id="home"
+          className="h-screen flex justify-center items-center bg-cover bg-center px-4"
+          style={{ backgroundImage: `url(${homebg})` }}
+        >
+          {/* Container to wrap content */}
+          <div className="container mx-auto flex justify-center items-center">
+            {/* Card */}
+            <div className=" text-white p-10 rounded-3xl shadow-lg w-full max-w-3xl lg:max-w-5xl flex flex-col justify-center items-center text-center mx-4 container-glow">              <div className="flex flex-col items-center justify-center h-full w-full">
+                {/* Typewriter effect for the text */}
+                <h1 className="text-4xl sm:text-6xl font-bold mb-4 gradient-text">
+                  {wrapEachWord(text1)}
+                </h1>
+                <h2 className="text-3xl sm:text-5xl font-bold mb-4 gradient-text">
+                  {wrapEachWord(text2)}
+                </h2>
+                <p className="text-lg sm:text-2xl mb-6 gradient-text">
+                  {wrapEachWord(text3)}
+                </p>
+                {showButton && (
+                  <SignInButton mode="modal">
+                    <button className="px-6 py-3 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:bg-gray-200 button-gradient">
+                      Get Started For Free!
+                    </button>
+                  </SignInButton>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
 
 
       {/* About Section */}

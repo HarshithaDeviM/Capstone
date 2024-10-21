@@ -3,25 +3,7 @@
 @tailwind utilities;
 
 
-/* Mobile styles for the text container */
-@media (max-width: 768px) {
-  .text-container {
-    width: 85%; /* Reduce width to ensure content fits in smaller screens */
-    padding: 1rem; /* Smaller padding for mobile */
-    text-align: center;
-    overflow-wrap: break-word; /* Wrap long words */
-    word-wrap: break-word; /* Ensure long words break */
-  }
 
-  .text-container .text-line {
-    font-size: 1rem; /* Reduce font size further for better fit */
-    line-height: 1.3; /* Add line height for readability */
-  }
-
-  .button-container {
-    margin-top: 1rem; /* Spacing between the text and button */
-  }
-}
 
 
 
@@ -64,26 +46,68 @@ code {
 .feature-slider .slick-next {
   right: -25px;
 }
-/* @keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
+
+
+
+.hover\:shadow-2xl:hover {
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes blink {
-  0%, 100% { border-color: transparent; }
-  50% { border-color: white; }
+/* Default style for each letter */
+/* Default hover effect for larger screens */
+@media (hover: hover) {
+  .letter:hover {
+    background: linear-gradient(90deg, #ff6ec4, #7873f5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: translateY(-5px);
+  }
 }
 
-.typing-text {
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 0.1em solid white; /* Thinner cursor and white color */
-  /* animation: typing 3s steps(40, end), blink 0.75s step-end infinite;
-  color: white; /* White color for the text */
-  /* text-align: center; /* Center align the text */
-  /* display: inline-block; Ensure width animation works properly */
-/* } */
+/* For touch devices, you could use an active state */
+@media (hover: none) {
+  .letter:active {
+    background: linear-gradient(90deg, #ff6ec4, #7873f5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: translateY(-3px);
+  }
+}
 
-/* .typing-text.complete {
-  /* border-right: none; Remove the cursor once typing is complete */
-/* } */ 
+
+/* Ensure words stay together */
+.word {
+  display: inline-block;
+  white-space: nowrap; /* Prevent line breaks within words */
+}
+
+/* Gradient effect and lift on hover for the button */
+.button-gradient {
+  background: white; /* Default background color */
+  color: #007bff; /* Default text color */
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Hover effect for gradient */
+.button-gradient:hover {
+  background: linear-gradient(90deg, #ff6ec4, #7873f5); /* Gradient background */
+  color: white; /* Text color changes to white on hover */
+  transform: translateY(-5px); /* Slight lift effect */
+}
+
+/* Default container style */
+.container-glow {
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Gradient glow effect on hover */
+.container-glow:hover {
+  box-shadow: 0 0 20px 5px rgba(110, 231, 255, 0.5), 
+              0 0 30px 10px rgba(120, 115, 245, 0.5);
+}
+
+
+
+
