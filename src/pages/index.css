@@ -114,9 +114,10 @@ code {
   
 }
 .card-glow:hover {
-  box-shadow: 0 0 20px 5px rgba(110, 231, 255, 0.5), 
-              0 0 30px 10px rgba(120, 115, 245, 0.5);
+  box-shadow: 0 0 5px 5px rgba(110, 231, 255, 0.5), 
+              0 0 10px 5px rgba(120, 115, 245, 0.5);
   transform: translateY(-5px);
+  border-radius: 1.5rem;
 }
 
 
@@ -128,4 +129,3 @@ code {
   border-radius: 10px;
 }
 
-/* For images covering the whole card on mobile */

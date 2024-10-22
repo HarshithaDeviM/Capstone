@@ -18,6 +18,9 @@ import featureImage3 from './background/image3.png';
 import mobileImage1 from './background/mobileFeature1.jpg';
 import mobileImage2 from './background/mobileFeature2.jpg';
 import mobileImage3 from './background/mobileFeature3.jpg';
+import About from './Aboutsection';
+
+
 
 
 
@@ -45,14 +48,7 @@ function LandingPage() {
 
     startTyping(); // Trigger the typing animation
   }, []);
-  const renderHeaderWithGradientEffect = (text) => {
-    return text.split("").map((letter, index) => (
-      <span key={index} className="gradient-letter">
-        {letter}
-      </span>
-    ));
-  };
-
+  
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -228,41 +224,7 @@ function LandingPage() {
 
 
       {/* About Section */}
-      <section id="about" className="h-screen flex flex-col justify-center items-center bg-[#011a2e] py-20">
-        <div className="container mx-auto flex flex-col lg:flex-row p-10 space-x-8">
-          <div className="flex-1 text-left mb-8 text-white pl-10">
-            <h2 className="text-7xl font-bold mb-4">About Our</h2>
-            <h2 className="text-7xl font-bold mb-4">Website</h2>
-            <p className="text-lg">
-              Our AI-powered platform revolutionizes interview preparation,
-              offering tailored questions and insights to help you succeed
-              in landing your dream job. We analyze your resume and the job
-              description to provide the most relevant and impactful
-              interview practice experience.
-            </p>
-          </div>
-          {/*<div className="flex flex-col space-y-4 flex-1">
-            <div></div>
-            <div className="bg-white text-blue p-5 rounded-3xl shadow-lg">
-              <center>
-                <h3 className="sm:text-xl font-bold">Resume Based Interview Questions</h3>
-              </center>
-            </div>
-            <div></div>
-            <div className="bg-white text-blue p-5 rounded-3xl shadow-lg">
-              <center>
-                <h3 className="sm:text-xl font-bold">Role Based Interview Questions</h3>
-              </center>
-            </div>
-            <div></div>
-            <div className="bg-white text-blue p-5 rounded-3xl shadow-lg">
-              <center>
-                <h3 className="sm:text-xl font-bold">Company Specific Interview Questions</h3>
-              </center>
-            </div>
-          </div> */}
-        </div>
-      </section>
+      <About />
 
 
 
@@ -270,11 +232,11 @@ function LandingPage() {
       <section id="features" className="min-h-screen flex justify-center items-center bg-[#011a2e] py-20">
         <div className="container mx-auto px-4 sm:px-2 lg:px-8">
           <div className="max-w-6xl mx-auto rounded-3xl ">
-            <Slider {...sliderSettings} className="feature-slider  card-glow rounded-3xl">
+            <Slider {...sliderSettings} className="feature-slider rounded-3xl">
               {/* Slide 1 */}
               <div className="p-4 md:px-2 w-full ">
                 <SignInButton mode="modal">
-                  <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe] cursor-pointer ">
+                  <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe] cursor-pointer card-glow">
                     <div className="flex-1 flex items-center justify-center overflow-hidden rounded-3xl  ">
                       <img
                         src={isMobile ? mobileImage1 : eImage}
@@ -294,7 +256,7 @@ function LandingPage() {
               {/* Slide 2 */}
               <div className="p-4 md:px-2 w-full">
                 <SignInButton mode="modal">
-                  <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe] cursor-pointer card-hover-lift">
+                  <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe] cursor-pointer card-glow">
                     <div className="flex-1 flex items-center justify-center overflow-hidden rounded-3xl">
                       <img
                         src={isMobile ? mobileImage2 : featureImage2}
@@ -314,7 +276,7 @@ function LandingPage() {
               {/* Slide 3 */}
               <div className="p-4 md:px-2 w-full">
                 <SignInButton mode="modal">
-                  <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe] cursor-pointer card-hover-lift">
+                  <div className="h-[50vh] md:h-[60vh] flex flex-col justify-between relative rounded-3xl overflow-hidden bg-[#dbeafe] cursor-pointer card-glow">
                     <div className="flex-1 flex items-center justify-center overflow-hidden rounded-3xl">
                       <img
                         src={isMobile ? mobileImage3 : featureImage3}
@@ -330,13 +292,6 @@ function LandingPage() {
                   </div>
                 </SignInButton>
               </div>
-
-
-
-
-
-
-
             </Slider>
           </div>
         </div>
@@ -345,65 +300,124 @@ function LandingPage() {
 
 
       {/* Plans Section */}
-      < section id="plans" className="min-h-screen flex flex-col justify-center items-center bg-[#011a2e] py-16" >
+      <section id="plans" className="min-h-screen flex flex-col justify-center items-center bg-[#011a2e] py-16">
         {/* Heading for Plans */}
-        < h2 className="text-5xl text-white text-center font-semibold mb-10" > Our Plans</h2 >
+        <h2 className="text-5xl text-white text-center font-semibold mb-10">Our Plans</h2>
 
-        <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-6 w-full px-4">
-          {/* Basic Plan */}
-          <div className="bg-gradient-to-b from-[#363d4f] to-[#7a8db5] rounded-3xl text-white p-8 w-full md:w-80 h-auto flex-shrink-0 transition-transform duration-300 hover:scale-105 hover:from-[#2c4a88] hover:to-[#0c1323]">
-            <center>
-              <h2 className="text-4xl font-semibold mb-2">Basic Plan</h2>
-              <p className="text-7xl font-bold mt-8">$19</p>
-            </center>
-            <p className="mb-4 mt-8">• Resume modification based on job description<br />
-              • Job description-based interview questions</p>
-            <center>
-              <SignInButton mode="modal">
-                <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full">
-                  Select Plan
-                </button>
-              </SignInButton>
-            </center>
+        <div className="flex flex-col md:flex-row justify-center space-x-6 space-y-6 md:space-y-0 overflow-hidden relative w-full">
+          {/* For mobile view, add swiper functionality */}
+          <div className="flex md:hidden w-full snap-x overflow-x-auto scrollbar-hide">
+            {/* Basic Plan */}
+            <div className="bg-gradient-to-b from-[#363d4f] to-[#7a8db5] rounded-3xl text-white p-8 w-80 h-96 flex-shrink-0 snap-center mx-4 transition-transform duration-300 hover:scale-105 hover:from-[#2c4a88] hover:to-[#0c1323]">
+              <center>
+                <h2 className="text-4xl font-semibold mb-2 p-5px">Basic Plan</h2>
+                <p className="text-7xl mb-2 font-bold p-5px mt-8">$19</p>
+              </center>
+              <p className="mb-4 mt-8">• Resume modification based on job description<br />
+                • Job description-based interview questions</p>
+              <center>
+                <SignInButton mode="modal">
+                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full ">
+                    Select Plan
+                  </button>
+                </SignInButton>
+              </center>
+            </div>
+
+            {/* Standard Plan */}
+            <div className="bg-gradient-to-b from-[#363d4f] to-[#7a8db5] rounded-3xl text-white p-8 w-80 h-96 flex-shrink-0 snap-center mx-4 transition-transform duration-300 hover:scale-105 hover:from-[#2c4a88] hover:to-[#0c1323]">
+              <center>
+                <h2 className="text-4xl font-semibold mb-2 p-5px">Standard Plan</h2>
+                <p className="text-7xl mb-2 font-bold p-5px mt-8">$39</p>
+              </center>
+              <p className="mb-4 mt-8">• All Basic Plan features<br />
+                • Personalized interview strategies<br />
+                • 24/7 AI chat support</p>
+              <center>
+                <SignInButton mode="modal">
+                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full ">
+                    Select Plan
+                  </button>
+                </SignInButton>
+              </center>
+            </div>
+
+            {/* Premium Plan */}
+            <div className="bg-gradient-to-b from-[#363d4f] to-[#7a8db5] rounded-3xl text-white p-8 w-80 h-96 flex-shrink-0 snap-center mx-4 transition-transform duration-300 hover:scale-105 hover:from-[#2c4a88] hover:to-[#0c1323]">
+              <center>
+                <h2 className="text-4xl font-semibold mb-2 p-5px">Premium Plan</h2>
+                <p className="text-7xl mb-2 font-bold p-5px mt-8">$59</p>
+              </center>
+              <p className="mb-4 mt-8">• All Standard Plan features<br />
+                • Mock interviews with AI<br />
+                • Performance analysis and feedback</p>
+              <center>
+                <SignInButton mode="modal">
+                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full ">
+                    Select Plan
+                  </button>
+                </SignInButton>
+              </center>
+            </div>
           </div>
 
-          {/* Standard Plan */}
-          <div className="bg-gradient-to-b from-[#363d4f] to-[#7a8db5] rounded-3xl text-white p-8 w-full md:w-80 h-auto flex-shrink-0 transition-transform duration-300 hover:scale-105 hover:from-[#2c4a88] hover:to-[#0c1323]">
-            <center>
-              <h2 className="text-4xl font-semibold mb-2">Standard Plan</h2>
-              <p className="text-7xl font-bold mt-8">$39</p>
-            </center>
-            <p className="mb-4 mt-8">• All Basic Plan features<br />
-              • Personalized interview strategies<br />
-              • 24/7 AI chat support</p>
-            <center>
-              <SignInButton mode="modal">
-                <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full">
-                  Select Plan
-                </button>
-              </SignInButton>
-            </center>
-          </div>
+          {/* Desktop view remains unchanged */}
+          <div className="hidden md:flex flex-col md:flex-row justify-center space-x-8 space-y-4 md:space-y-0 w-full">
+            {/* Basic Plan */}
+            <div className="bg-gradient-to-b from-[#363d4f] to-[#7a8db5] rounded-3xl text-white p-8 w-80 h-96 flex-shrink-0 transition-transform duration-300 hover:scale-105 hover:from-[#2c4a88] hover:to-[#0c1323]">
+              <center>
+                <h2 className="text-4xl font-semibold mb-2">Basic Plan</h2>
+                <p className="text-7xl font-bold mt-8">$19</p>
+              </center>
+              <p className="mb-4 mt-8">• Resume modification based on job description<br />
+                • Job description-based interview questions</p>
+              <center>
+                <SignInButton mode="modal">
+                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full">
+                    Select Plan
+                  </button>
+                </SignInButton>
+              </center>
+            </div>
 
-          {/* Premium Plan */}
-          <div className="bg-gradient-to-b from-[#363d4f] to-[#7a8db5] rounded-3xl text-white p-8 w-full md:w-80 h-auto flex-shrink-0 transition-transform duration-300 hover:scale-105 hover:from-[#2c4a88] hover:to-[#0c1323]">
-            <center>
-              <h2 className="text-4xl font-semibold mb-2">Premium Plan</h2>
-              <p className="text-7xl font-bold mt-8">$59</p>
-            </center>
-            <p className="mb-4 mt-8">• All Standard Plan features<br />
-              • Mock interviews with AI<br />
-              • Performance analysis and feedback</p>
-            <center>
-              <SignInButton mode="modal">
-                <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full">
-                  Select Plan
-                </button>
-              </SignInButton>
-            </center>
+            {/* Standard Plan */}
+            <div className="bg-gradient-to-b from-[#363d4f] to-[#7a8db5] rounded-3xl text-white p-8 w-80 h-96 flex-shrink-0 transition-transform duration-300 hover:scale-105 hover:from-[#2c4a88] hover:to-[#0c1323]">
+              <center>
+                <h2 className="text-4xl font-semibold mb-2 p-5px">Standard Plan</h2>
+                <p className="text-7xl mb-2 font-bold p-5px mt-8">$39</p>
+              </center>
+              <p className="mb-4 mt-8">• All Basic Plan features<br />
+                • Personalized interview strategies<br />
+                • 24/7 AI chat support</p>
+              <center>
+                <SignInButton mode="modal">
+                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full">
+                    Select Plan
+                  </button>
+                </SignInButton>
+              </center>
+            </div>
+
+            {/* Premium Plan */}
+            <div className="bg-gradient-to-b from-[#363d4f] to-[#7a8db5] rounded-3xl text-white p-8 w-80 h-96 flex-shrink-0 transition-transform duration-300 hover:scale-105 hover:from-[#2c4a88] hover:to-[#0c1323]">
+              <center>
+                <h2 className="text-4xl font-semibold mb-2 p-5px">Premium Plan</h2>
+                <p className="text-7xl mb-2 font-bold p-5px mt-8">$59</p>
+              </center>
+              <p className="mb-4 mt-8">• All Standard Plan features<br />
+                • Mock interviews with AI<br />
+                • Performance analysis and feedback</p>
+              <center>
+                <SignInButton mode="modal">
+                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full">
+                    Select Plan
+                  </button>
+                </SignInButton>
+              </center>
+            </div>
           </div>
         </div>
-      </section >
+      </section>
 
 
 
