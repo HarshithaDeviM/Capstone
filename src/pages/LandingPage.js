@@ -7,6 +7,7 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ChevronDown, Menu } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
 import { SignInButton, SignUpButton } from '@clerk/clerk-react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
@@ -19,8 +20,25 @@ import mobileImage1 from './background/mobileFeature1.jpg';
 import mobileImage2 from './background/mobileFeature2.jpg';
 import mobileImage3 from './background/mobileFeature3.jpg';
 import About from './Aboutsection';
+import { Link } from 'react-router-dom';
 
-
+export const wrapEachWord = (text) => {
+  return text.split(" ").map((word, wordIndex) => (
+    <span key={wordIndex} className="word" style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+      {word.split("").map((char, charIndex) => (
+        <span
+          key={charIndex}
+          className="letter"
+          style={{ display: "inline-block" }} // Keeps each character inline
+        >
+          {char}
+        </span>
+      ))}
+      {/* Add a space after each word */}
+      <span className="letter" style={{ display: "inline-block" }}>&nbsp;</span>
+    </span>
+  ));
+};
 
 
 
@@ -32,6 +50,7 @@ function LandingPage() {
   const [text3, setText3] = useState('');
   const [showButton, setShowButton] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeSection, setActiveSection] = useState('#home');
 
 
   useEffect(() => {
@@ -48,7 +67,7 @@ function LandingPage() {
 
     startTyping(); // Trigger the typing animation
   }, []);
-  
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -79,23 +98,7 @@ function LandingPage() {
     }
   };
 
-  const wrapEachWord = (text) => {
-    return text.split(" ").map((word, wordIndex) => (
-      <span key={wordIndex} className="word" style={{ display: "inline-block", whiteSpace: "nowrap" }}>
-        {word.split("").map((char, charIndex) => (
-          <span
-            key={charIndex}
-            className="letter"
-            style={{ display: "inline-block" }} // Keeps each character inline
-          >
-            {char}
-          </span>
-        ))}
-        {/* Add a space after each word */}
-        <span className="letter" style={{ display: "inline-block" }}>&nbsp;</span>
-      </span>
-    ));
-  };
+
 
   // Slider settings
   const sliderSettings = {
@@ -110,12 +113,41 @@ function LandingPage() {
   const { isSignedIn } = useAuth();
   const history = useHistory();
 
+  useEffect(() => {
+    const sections = document.querySelectorAll('section');
+    const options = {
+      threshold: 0.5, // Trigger when 50% of the section is visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(`#${entry.target.id}`);
+        }
+      });
+    }, options);
+
+    sections.forEach((section) => {
+      observer.observe(section);
+    });
+
+    return () => {
+      sections.forEach((section) => {
+        observer.unobserve(section);
+      });
+    };
+  }, []);
 
   useEffect(() => {
     if (isSignedIn) {
       history.push('/dashboard');
     }
   }, [isSignedIn, history]);
+
+  const handleMobileLinkClick = () => {
+    setMobileMenuOpen(false);
+  };
+
 
   // FAQ data
   const faqs = [
@@ -137,28 +169,54 @@ function LandingPage() {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
 
+
   return (
     <div>
       {/* Navbar */}
-      <nav className="bg-[#687494] text-white fixed w-full top-0 z-10 px-1 font-bold">
+      <nav className="bg-[#011A2E]/80 border-b-2 border-blue-500 text-white fixed w-full top-0 z-10 px-1 font-bold">
         <div className="container mx-auto flex justify-between items-center py-4 px-6">
+          <div className="hidden md:flex items-center space-x-4">
+            <img src="/path/to/your/logo.png" alt="Company Logo" className="h-8 w-auto" />
+          </div>
           {/* Mobile Menu Toggle */}
           <div className="md:hidden">
-            <button
-              onClick={toggleMobileMenu}
-              className="text-white focus:outline-none"
-            >
+            <button onClick={toggleMobileMenu} className="text-white focus:outline-none">
               <Menu className="h-8 w-8" />
             </button>
           </div>
 
           {/* Left side: Navigation Links (Desktop) */}
-          <div className="hidden md:flex space-x-8 px-10">
-            <a href="#home" className="hover:text-gray-300 uppercase ">Home</a>
-            <a href="#about" className="hover:text-gray-300 uppercase">About</a>
-            <a href="#features" className="hover:text-gray-300">FEATURES</a>
-            <a href="#plans" className="hover:text-gray-300 uppercase">Plans</a>
-            <a href="#faqs" className="hover:text-gray-300 uppercase">FAQs</a>
+          <div className="hidden md:flex flex-1 justify-center space-x-8">
+            <a
+              href="#home"
+              className={`hover:text-gray-300 uppercase ${activeSection === '#home' ? 'underline-glow' : ''}`}
+            >
+              Home
+            </a>
+            <a
+              href="#about"
+              className={`hover:text-gray-300 uppercase ${activeSection === '#about' ? 'underline-glow' : ''}`}
+            >
+              About
+            </a>
+            <a
+              href="#features"
+              className={`hover:text-gray-300 uppercase ${activeSection === '#features' ? 'underline-glow' : ''}`}
+            >
+              Features
+            </a>
+            <a
+              href="#plans"
+              className={`hover:text-gray-300 uppercase ${activeSection === '#plans' ? 'underline-glow' : ''}`}
+            >
+              Plans
+            </a>
+            <a
+              href="#faqs"
+              className={`hover:text-gray-300 uppercase ${activeSection === '#faqs' ? 'underline-glow' : ''}`}
+            >
+              FAQs
+            </a>
           </div>
 
           {/* Right side: Sign In/Sign Up Buttons (Always visible and aligned to the right) */}
@@ -179,13 +237,17 @@ function LandingPage() {
         {/* Mobile Menu (Shown when Hamburger is clicked) */}
         {isMobileMenuOpen && (
           <div className="md:hidden bg-[#1a202c] text-white px-2 py-4 space-y-2">
-            <a href="#home" className="block py-2 hover:bg-gray-700">Home</a>
-            <a href="#about" className="block py-2 hover:bg-gray-700">About</a>
-            <a href="#features" className="block py-2 hover:bg-gray-700">Features</a>
-            <a href="#plans" className="block py-2 hover:bg-gray-700">Plans</a>
-            <a href="#faqs" className="block py-2 hover:bg-gray-700">FAQs</a>
+            <a href="#home" className="block py-2 hover:bg-gray-700" onClick={handleMobileLinkClick}>Home</a>
+            <a href="#about" className="block py-2 hover:bg-gray-700" onClick={handleMobileLinkClick}>About</a>
+            <a href="#features" className="block py-2 hover:bg-gray-700" onClick={handleMobileLinkClick}>Features</a>
+            <a href="#plans" className="block py-2 hover:bg-gray-700" onClick={handleMobileLinkClick}>Plans</a>
+            <a href="#faqs" className="block py-2 hover:bg-gray-700" onClick={handleMobileLinkClick}>FAQs</a>
           </div>
         )}
+
+
+
+
       </nav>
 
       <div>
@@ -196,27 +258,28 @@ function LandingPage() {
           style={{ backgroundImage: `url(${homebg})` }}
         >
           {/* Container to wrap content */}
-          <div className="container mx-auto flex justify-center items-center">
+          <div className="container mx-auto flex justify-center items-center ">
             {/* Card */}
-            <div className=" text-white p-10 rounded-3xl shadow-lg w-full max-w-3xl lg:max-w-5xl flex flex-col justify-center items-center text-center mx-4 container-glow">              <div className="flex flex-col items-center justify-center h-full w-full">
-              {/* Typewriter effect for the text */}
-              <h1 className="text-4xl sm:text-6xl font-bold mb-4 gradient-text">
-                {wrapEachWord(text1)}
-              </h1>
-              <h2 className="text-3xl sm:text-5xl font-bold mb-4 gradient-text">
-                {wrapEachWord(text2)}
-              </h2>
-              <p className="text-lg sm:text-2xl mb-6 gradient-text">
-                {wrapEachWord(text3)}
-              </p>
-              {showButton && (
-                <SignInButton mode="modal">
-                  <button className="px-6 py-3 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:bg-gray-200 button-gradient">
-                    Get Started For Free!
-                  </button>
-                </SignInButton>
-              )}
-            </div>
+            <div className=" text-white p-10 rounded-3xl shadow-lg w-full max-w-3xl lg:max-w-5xl flex flex-col justify-center items-center text-center mx-4 container-glow ">
+              <div className="flex flex-col items-center justify-center h-full w-full">
+                {/* Typewriter effect for the text */}
+                <h1 className="text-4xl sm:text-6xl font-bold mb-4 gradient-text">
+                  {wrapEachWord(text1)}
+                </h1>
+                <h2 className="text-3xl sm:text-5xl font-bold mb-4 gradient-text">
+                  {wrapEachWord(text2)}
+                </h2>
+                <p className="text-lg sm:text-2xl mb-6 gradient-text">
+                  {wrapEachWord(text3)}
+                </p>
+                {showButton && (
+                  <SignInButton mode="modal">
+                    <button className="px-6 py-3 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:bg-gray-200 button-gradient">
+                      Get Started For Free!
+                    </button>
+                  </SignInButton>
+                )}
+              </div>
             </div>
           </div>
         </section>
@@ -224,7 +287,8 @@ function LandingPage() {
 
 
       {/* About Section */}
-      <About />
+      <section id="about"><About /></section>
+
 
 
 
@@ -302,7 +366,7 @@ function LandingPage() {
       {/* Plans Section */}
       <section id="plans" className="min-h-screen flex flex-col justify-center items-center bg-[#011a2e] py-16">
         {/* Heading for Plans */}
-        <h2 className="text-5xl text-white text-center font-semibold mb-10">Our Plans</h2>
+        <h2 className="text-5xl text-white text-center font-semibold mb-10">{wrapEachWord("Our Plans")}</h2>
 
         <div className="flex flex-col md:flex-row justify-center space-x-6 space-y-6 md:space-y-0 overflow-hidden relative w-full">
           {/* For mobile view, add swiper functionality */}
@@ -317,7 +381,7 @@ function LandingPage() {
                 • Job description-based interview questions</p>
               <center>
                 <SignInButton mode="modal">
-                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full ">
+                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full">
                     Select Plan
                   </button>
                 </SignInButton>
@@ -373,7 +437,7 @@ function LandingPage() {
                 • Job description-based interview questions</p>
               <center>
                 <SignInButton mode="modal">
-                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full">
+                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full button-gradient">
                     Select Plan
                   </button>
                 </SignInButton>
@@ -391,7 +455,7 @@ function LandingPage() {
                 • 24/7 AI chat support</p>
               <center>
                 <SignInButton mode="modal">
-                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full">
+                  <button className="bg-[#0a4272] text-white px-4 py-2 rounded-full card-glow">
                     Select Plan
                   </button>
                 </SignInButton>
@@ -425,12 +489,12 @@ function LandingPage() {
       {/* FAQ Section */}
       < section id="faqs" className="min-h-screen flex flex-col justify-center items-center bg-[#011a2e] py-20" >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold text-white mb-10 text-center">Frequently Asked Questions</h1>
+          <h1 className="text-5xl font-bold text-white mb-10 text-center">{wrapEachWord("Frequently Asked Questions")}</h1>
           <div className="max-w-3xl mx-auto">
             {faqs.map((faq, index) => (
               <div key={index} className="mb-4">
                 <button
-                  className="w-full bg-white text-left p-4 rounded-md flex justify-between items-center"
+                  className="w-full bg-[#363d4f] text-left text-white p-4 rounded-md flex justify-between items-center card-glow"
                   onClick={() => toggleFAQ(index)}
                 >
                   <span className="font-semibold">{faq.question}</span>
@@ -445,14 +509,45 @@ function LandingPage() {
             ))}
           </div>
         </div>
-        <div className="mt-10 bg-gray-200 text-center p-6 rounded-full max-w-5xl mx-auto">
-          <p className="sm:text-xl font-semibold px-5">
-            Unlock tailored interview questions and expert insights designed to help you land your dream job.
-            <br></br>Prepare smarter, not harder.
-          </p>
-        </div>
       </section >
+
+
+      <footer className="bg-[#011a2e] text-white py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-4 md:mb-0">
+              <img src="/logo.svg" alt="Company Logo" className="h-8" />
+            </div>
+            <nav className="mb-4 md:mb-0">
+              <ul className="flex space-x-4">
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Home</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Services</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Contact</a></li>
+              </ul>
+            </nav>
+            <div className="flex space-x-4">
+              <a href="#" className="hover:text-blue-400 transition-colors" aria-label="Facebook">
+                <Facebook size={24} />
+              </a>
+              <a href="#" className="hover:text-blue-400 transition-colors" aria-label="Twitter">
+                <Twitter size={24} />
+              </a>
+              <a href="#" className="hover:text-blue-400 transition-colors" aria-label="Instagram">
+                <Instagram size={24} />
+              </a>
+              <a href="#" className="hover:text-blue-400 transition-colors" aria-label="LinkedIn">
+                <Linkedin size={24} />
+              </a>
+            </div>
+          </div>
+          <div className="mt-8 text-center text-sm">
+            <p>&copy; {new Date().getFullYear()} Your Company Name. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div >
+
   );
 }
 

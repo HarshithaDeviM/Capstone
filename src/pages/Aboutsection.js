@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Search, UserCheck, Zap, BookOpen } from 'lucide-react'
+import { wrapEachWord } from './LandingPage';
+
 
 const AboutUsTimeline = () => {
     const features = [
@@ -59,16 +61,16 @@ const AboutUsTimeline = () => {
     }
 
     return (
-        <section className="min-h-screen bg-[#011a2e] text-white py-16 px-4 md:px-8 lg:px-16">
+        <section id="about" className="min-h-screen bg-[#011a2e] text-white py-16 px-4 md:px-8 lg:px-16">
 
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-4xl mx-auto pt-10">
                 <motion.h2
                     className="text-4xl md:text-5xl font-bold text-center mb-12"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    Our AI-Powered Journey
+                    {wrapEachWord("About Us")}
                 </motion.h2>
 
                 <motion.div
